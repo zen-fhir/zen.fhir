@@ -1,0 +1,55 @@
+* About
+=zen.fhir= is a [[github.com/zen-lang/zen][zen-lang]] namespace that is used by all [[github.com/zen-lang/fhir][zen-fhir]] packages.
+
+=zen.fhir= extends =zen/schema= to allow describing FHIR specific info such as bindings, references, extensions, etc.
+
+* Table of Contents                                                     :TOC:
+- [[#about][About]]
+- [[#how-to][How to]]
+  - [[#describe-a-profile-on][describe a profile on]]
+    - [[#existing-fhir-resource-type][existing FHIR resource type]]
+    - [[#existing-fhir-data-type][existing FHIR data type]]
+    - [[#existing-fhir-profile][existing FHIR profile]]
+  - [[#describe-a-constraint][describe a constraint]]
+    - [[#require-cardinality-1x][require (cardinality 1..x)]]
+    - [[#forbid-cardinality-00][forbid (cardinality 0..0)]]
+    - [[#min-and-max-elements-in-an-array][min and max elements in an array]]
+    - [[#value-pattern][value pattern]]
+    - [[#fixed-value][fixed value]]
+    - [[#binding-to-a-value-set][binding to a value set]]
+    - [[#slicing-on-an-array][slicing on an array]]
+    - [[#invariant][invariant]]
+  - [[#describe-an-extension][describe an extension]]
+    - [[#of-primitive-type][of primitive type]]
+    - [[#of-complex-type][of complex type]]
+    - [[#with-nested-extension][with nested extension]]
+    - [[#constraint][constraint]]
+  - [[#add-an-extension-into-a-profile][add an extension into a profile]]
+  - [[#describe-a-new-value-set][describe a new value set]]
+  - [[#constraint-some-existing-value-set-or-code-system][constraint some existing value set or code system]]
+  - [[#describe-arbitrary-resource][describe arbitrary resource]]
+
+* How to
+This section contains examples of describing FHIR constraints with zen.
+** describe a profile on
+*** existing FHIR resource type
+*** existing FHIR data type
+*** existing FHIR profile 
+** describe a constraint
+*** require (cardinality 1..x)
+*** forbid (cardinality 0..0)
+*** min and max elements in an array 
+*** value pattern
+*** fixed value
+*** binding to a value set
+*** slicing on an array
+*** invariant
+** describe an extension
+*** of primitive type
+*** of complex type
+*** with nested extension
+*** constraint
+** add an extension into a profile
+** describe a new value set
+** constraint some existing value set or code system 
+** describe arbitrary resource
