@@ -120,6 +120,37 @@ Setting that a ~zen/vector~ has a *minimum 1* element *does not make* a key that
 We need to explicitly state that the key is also required.
 
 *** value pattern
+In FHIR profiles ~pattern[x]~ most of the time is used in [[#slicing-on-an-array][slicings.]]
+~:match~ property of ~zen/schema~ allows to describe a pattern matching.
+
+Below is an example defining a pattern to the ~Observation.code~ element,
+the pattern describes that in the ~:coding~ array should be
+at least one object with ~:system "my-system"~ and ~:code "my-code"~:
+
+#+BEGIN_SRC edn
+   MyObservationProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
+    :confirms #{fhir/Observation}
+    :type zen/map
+    :keys {:code {:match {:coding #{{:system "my-system", :code "my-code"}}}}}}
+#+END_SRC
+
+~:match~ pattern matching syntax is a recursive data structure that consists of several parts:
+- ~{}~ contains keys and their patterns applied to an object, each key from the ~{}~ should be present in the object and match the pattern.
+  The object may contain any extra keys not mentioned in the pattern.
+- ~#{}~ contains patterns applied to arrays, for each pattern from the ~#{}~ there should be at least one match in a data array.
+  The array may contain any other elements not matched by the pattern.
+- any other primitive value means that data should be a constant value
+
+Break down of the example above:
+1. The pattern is ~{:coding #{{:system "my-system", :code "my-code"}}}~;
+2. Top level of the pattern is ~{:coding ...}~, it expects data to be an object containing key ~:coding~;
+3. To a value of the key ~:coding~ the pattern ~#{{:system ...}}~ is applied;
+4. The ~#{}~ syntax expects the data to be an array containing at least one match to the pattern ~{:system "my-system", :code "my-code"}~;
+5. ~{:system "my-system", :code "my-code"}~ expects data to be an object containing keys ~:system~ and ~:code~ with values "my-system" and "my-code" respectively.
+
 *** fixed value
 *** binding to a value set
 *** slicing on an array
