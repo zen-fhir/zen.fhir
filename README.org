@@ -103,6 +103,22 @@ And because ~:require~ is a property of the ~zen/map~ type you need to specify t
 Currently, there's no way to forbid using an element in zen-lang. Here's [[https://github.com/zen-lang/zen/issues/32][the issue]] to track the status of this feature.
 
 *** min and max elements in an array 
+~:type zen/vector~ provides ~:minItems~ and ~:maxItems~ properties. Example of limiting a ~Patient.name~ to exactly one element:
+#+BEGIN_SRC edn
+   MyPatientProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+    :confirms #{fhir/Patient}
+    :type zen/map
+    :require #{:name}
+    :keys {:name {:type zen/vector
+                  :minItems 1
+                  :maxItems 1}}}
+#+END_SRC
+Setting that a ~zen/vector~ has a *minimum 1* element *does not make* a key that stores this value *required* to be present.
+We need to explicitly state that the key is also required.
+
 *** value pattern
 *** fixed value
 *** binding to a value set
