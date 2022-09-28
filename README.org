@@ -170,6 +170,7 @@ Here's an example setting a value of the ~Observation.status~ element to be alwa
 *** slicing on an array
 *** binding to a value set
 *** invariant
+** describe a constraint to a nested element
 ** describe an extension
 *** of primitive type
 *** of complex type
