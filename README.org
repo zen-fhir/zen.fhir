@@ -100,6 +100,8 @@ Your schema doesn't implicitly inherit the ~:type zen/map~ from the ~:confirms #
 And because ~:require~ is a property of the ~zen/map~ type you need to specify the type explicitly in your schema.
 
 *** forbid (cardinality 0..0)
+Currently, there's no way to forbid using an element in zen-lang. Here's [[https://github.com/zen-lang/zen/issues/32][the issue]] to track the status of this feature.
+
 *** min and max elements in an array 
 *** value pattern
 *** fixed value
