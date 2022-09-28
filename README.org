@@ -152,8 +152,23 @@ Break down of the example above:
 5. ~{:system "my-system", :code "my-code"}~ expects data to be an object containing keys ~:system~ and ~:code~ with values "my-system" and "my-code" respectively.
 
 *** fixed value
-*** binding to a value set
+To define a fixed value use ~:const~ property of ~zen/schema~ allows to describe a constant value.
+The same way as patterns, ~value[x]~ most of the times is used in [[#slicing-on-an-array][slicings]] and also to set an extension URL.
+Zen FHIR offers first-class extensions instead, in case you want to define an extension refer to the [[#describe-an-extension][extension example]].
+Here's an example setting a value of the ~Observation.status~ element to be always ~final~ if it is present:
+
+#+BEGIN_SRC edn
+   MyObservationProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
+    :confirms #{fhir/Observation}
+    :type zen/map
+    :keys {:status {:const {:value "final"}}}}
+#+END_SRC
+
 *** slicing on an array
+*** binding to a value set
 *** invariant
 ** describe an extension
 *** of primitive type
