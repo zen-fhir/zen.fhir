@@ -306,23 +306,23 @@ More complex example of an extension:
   :type zen/map
   :keys {:meta {:type zen/map
                 :keys {:tenant-id
-                       {:confirms #{hl7-fhir-r4-core.string/schema}
+                       {:confirms #{fhir/string}
                         :zen/desc "Patient.meta.tenant-id first-class extension"
                         :fhir/extensionUri "http://tenant-id-extension-url"}}}
 
          :form {:type zen/vector
                 :zen/desc "Patient.form.[*] array first-class extension"
-                :every {:confirms #{hl7-fhir-r4-core.uri/schema}
+                :every {:confirms #{fhir/uri}
                         :fhir/extensionUri "http://patient-form-url"}}
 
          :info {:type zen/map
                 :zen/desc "Patient.info nested first-class extension"
                 :fhir/extensionUri "http://patient-info"
-                :keys {:registration {:confirms #{hl7-fhir-r4-core.dateTime/schema}
+                :keys {:registration {:confirms #{fhir/dateTime}
                                       :zen/desc "Patient.info.registration
                                                  extension.url deduced from key"}
 
-                       :referral {:confirms #{hl7-fhir-r4-core.uri/schema}
+                       :referral {:confirms #{fhir/uri}
                                   :fhir/extensionUri "http://patient-info-referral"
                                   :zen/desc "Patient.info.referral
                                              extension.url is specified"}}}}}
