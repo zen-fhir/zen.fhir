@@ -172,6 +172,26 @@ Here's an example setting a value of the ~Observation.status~ element to be alwa
 *** invariant
 
 ** describe a constraint to a nested element
+As it was mentioned [[#describe-a-constraint][before]], there's no inheritance in zen-lang, thus to describe a constraint of a
+nested element you need to describe structure containing the element.
+The following example requires ~Patient.name.given~ to be present and contain at least one element:
+
+#+BEGIN_SRC edn
+   MyPatientProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+    :confirms #{fhir/Patient}
+    :type zen/map
+    :require #{:name}
+    :keys {:name {:type zen/vector
+                  :minItems 1
+                  :every {:type zen/map
+                          :require #{:given}
+                          :keys {:given {:type zen/vector
+                                         :minItems 1}}}}}}
+#+END_SRC
+
 ** describe an extension
 *** of a primitive type
 *** of a complex type
