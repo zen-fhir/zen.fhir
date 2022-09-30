@@ -193,11 +193,146 @@ The following example requires ~Patient.name.given~ to be present and contain at
 #+END_SRC
 
 ** describe an extension
+Zen FHIR offers [[https://github.com/zen-lang/fhir#first-class-extensions][first-class extensions]] approach instead of regular FHIR way via slicings.
+First-class extensions are described in the same way as any other attributes and constraints, but with addition of an extension url.
+The following example describes the =us-core-race= first-class extension right inside of a profile:
+
+#+BEGIN_SRC edn
+ MyPatientProfile
+ {:zen/tags #{zen/schema zen.fhir/profile-schema}
+  :zen.fhir/version "0.5.0"
+  :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+  :confirms #{fhir/Patient}
+  :type zen/map
+  :keys {:race
+         {:type zen/map
+          :zen/desc "US Core Race Extension",
+          :fhir/extensionUri "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+          :require #{:text}
+          :keys {:ombCategory {:type zen/vector
+                               :maxItems 5
+                               :every {:confirms #{fhir/Coding}
+                                       :zen/desc "American Indian or Alaska Native|Asian|Black or African American|Native Hawaiian or Other Pacific Islander|White"
+                                       :zen.fhir/value-set {:symbol omb-race-category-value-set
+                                                            :strength :required}}}
+                 :detailed {:type zen/vector
+                            :every {:confirms #{fhir/Coding}
+                                    :zen/desc "Extended race codes"
+                                    :zen.fhir/value-set {:symbol detailed-race-value-set
+                                                         :strength :required}}}
+                 :text {:confirms #{fhir/string}
+                        :zen/desc "Race Text"}}}}}
+#+END_SRC
+
+Note that extension elements have ~:confirms~ to a FHIR primitive or complex type specified.
+Previously these were specified in the base profile schema.
+These ~:confirms~ and the ~:fhir/extensionUri~ are needed to allow zen FHIR <-> FHIR format transformation
+
+The structure defined by this schema describes data of such shape:
+
+#+BEGIN_SRC yaml
+resourceType: Patient
+id: sample-pt
+race:
+  category:
+  - {system: 'urn:oid:2.16.840.1.113883.6.238', code: 2028-9, display: Asian}
+  detailed:
+  - {system: 'urn:oid:2.16.840.1.113883.6.238', code: 2029-7, display: Asian Indian}
+  text: Asian Indian
+#+END_SRC
+
+This then can be converted to FHIR format and result in this
+
+#+BEGIN_SRC yaml
+resourceType: Patient
+id: sample-pt
+extension:
+- url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+  extension:
+  - url: ombCategory
+    valueCoding: {system: 'urn:oid:2.16.840.1.113883.6.238', code: 2028-9, display: Asian}
+  - url: detailed
+    valueCoding: {system: 'urn:oid:2.16.840.1.113883.6.238', code: 2029-7, display: Asian Indian}
+  - url: text
+    valueString: Asian Indian
+#+END_SRC
+
+Extensions can be extracted to a separate schema if you're going to reuse them across different profiles.
+Here's the =us-core-race= profile updated in a such manner:
+
+#+BEGIN_SRC edn
+
+ us-core-race
+ {:zen/tags #{zen/schema zen.fhir/structure-schema}
+  :zen.fhir/version "0.5.0"
+  :zen.fhir/profileUri "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+  :type zen/map
+  :require #{:text}
+  :keys {:ombCategory {:type zen/vector
+                       :maxItems 5
+                       :every {:confirms #{fhir/Coding}
+                               :zen/desc "American Indian or Alaska Native|Asian|Black or African American|Native Hawaiian or Other Pacific Islander|White"
+                               :zen.fhir/value-set {:symbol omb-race-category-value-set
+                                                    :strength :required}}}
+         :detailed {:type zen/vector
+                    :every {:confirms #{fhir/Coding}
+                            :zen/desc "Extended race codes"
+                            :zen.fhir/value-set {:symbol detailed-race-value-set
+                                                 :strength :required}}}
+         :text {:confirms #{fhir/string}
+                :zen/desc "Race Text"}}}
+
+ MyPatientProfile
+ {:zen/tags #{zen/schema zen.fhir/profile-schema}
+  :zen.fhir/version "0.5.0"
+  :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+  :confirms #{fhir/Patient}
+  :type zen/map
+  :keys {:race {:confirms #{us-core-race}
+                :zen/desc "US Core Race Extension"
+                :fhir/extensionUri "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"}}}
+#+END_SRC
+
+More complex example of an extension:
+
+#+BEGIN_SRC edn
+ MyPatient
+ {:zen/tags #{zen/schema zen.fhir/profile-schema}
+  :zen/desc "Patient resource schema with first-class extension definition examples"
+  :zen.fhir/version "0.5.20"
+  :confirms #{zen.fhir/Resource}
+  :zen.fhir/type "Patient"
+  :zen.fhir/profileUri "urn:profile:MyPatientProfile"
+  :type zen/map
+  :keys {:meta {:type zen/map
+                :keys {:tenant-id
+                       {:confirms #{hl7-fhir-r4-core.string/schema}
+                        :zen/desc "Patient.meta.tenant-id first-class extension"
+                        :fhir/extensionUri "http://tenant-id-extension-url"}}}
+
+         :form {:type zen/vector
+                :zen/desc "Patient.form.[*] array first-class extension"
+                :every {:confirms #{hl7-fhir-r4-core.uri/schema}
+                        :fhir/extensionUri "http://patient-form-url"}}
+
+         :info {:type zen/map
+                :zen/desc "Patient.info nested first-class extension"
+                :fhir/extensionUri "http://patient-info"
+                :keys {:registration {:confirms #{hl7-fhir-r4-core.dateTime/schema}
+                                      :zen/desc "Patient.info.registration
+                                                 extension.url deduced from key"}
+
+                       :referral {:confirms #{hl7-fhir-r4-core.uri/schema}
+                                  :fhir/extensionUri "http://patient-info-referral"
+                                  :zen/desc "Patient.info.referral
+                                             extension.url is specified"}}}}}
+#+END_SRC
+
 *** of a primitive type
 *** of a complex type
 *** with a nested extension
 *** constraint
 ** add an extension to a profile
 ** describe a new value set
-** constraint some existing value set or code system 
+** constraint some existing value set or code system
 ** describe arbitrary resource
