@@ -22,7 +22,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Generate package.json
-        run: echo "{\"name\":\"@zen-lang/zen.fhir\",\"version\":\"${env.RELEASE_VERSION}\",\"author\":\"Health-Samurai\",\"license\":\"MIT\"}" > zrc/package.json
+        run: echo "{\"name\":\"@zen-lang/zen.fhir\",\"version\":\"${{ env.RELEASE_VERSION }}\",\"author\":\"Health-Samurai\",\"license\":\"MIT\"}" > zrc/package.json
 
       - name: Publish npm package
         run: npm publish zrc --access=public
