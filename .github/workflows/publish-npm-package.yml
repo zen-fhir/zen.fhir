@@ -1,0 +1,30 @@
+name: publish-npm-package
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  npm:
+    name: Publish npm package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Set tag env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - uses: actions/setup-node@v3.4.1
+        with:
+          node-version: "14.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Generate package.json
+        run: echo '{"name":"@zen-lang/zen.fhir","version":"'${env.RELEASE_VERSION}'","author":"Health-Samurai","license":"MIT"}' > zrc/package.json
+
+      - name: Publish npm package
+        run: npm publish zrc --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
