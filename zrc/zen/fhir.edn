@@ -39,9 +39,10 @@
          :extractor-options {:type zen/map
                              :validation-type :open}}}
 
- zen.fhir.value-set
+ value-set-schema-key
  {:zen/tags #{zen/is-key zen/schema}
   :zen/desc "is value in value-set?"
+  :key-name :zen.fhir/value-set
   :type zen/map
   :validation-type :open
   :keys {:symbol {:type zen/symbol}}}
