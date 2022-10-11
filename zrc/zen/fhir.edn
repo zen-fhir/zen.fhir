@@ -25,12 +25,27 @@
          :localRef {:type zen/string}
          :uri {:type zen/string}}}
 
+ ftr-manifest
+ {:zen/tags #{zen/schema}
+  :validation-type :open
+  :type zen/map
+  :keys {:module      {:type zen/string}
+         :source-url  {:type zen/string}
+         :ftr-path    {:type zen/string}
+         :tag         {:type zen/string}
+         :source-type {:type zen/keyword
+                       :enum [{:value :flat-table}
+                              {:value :ig}]}
+         :extractor-options {:type zen/map
+                             :validation-type :open}}}
+
  value-set
  {:zen/tags #{zen/schema zen/tag}
   :zen/desc "Value set"
   :confirms #{version}
   :type zen/map
   :keys {:uri {:type zen/string}
+         :ftr {:confirms #{ftr-manifest}}
          :fhir/code-systems {:type zen/set
                              :every {:type zen/map
                                      :require #{:fhir/url}
