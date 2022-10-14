@@ -169,6 +169,27 @@ Here's an example setting a value of the ~Observation.status~ element to be alwa
 #+END_SRC
 
 *** reference to another resource
+
+When you have a schema with the ~zen.fhir/profile-schema~ tag you can describe reference to another schema. Use ~:zen.fhir/reference~ property and describe set of profile names in ~:refers~ property. In this example, we have described the ~:managingOrganization~ field, which can only refer to the ~MyOrganizationProfileName~ profile.
+
+#+BEGIN_SRC edn
+
+   MyPatientProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+    :confirms #{fhir/Patient}
+    :type zen/map
+    :keys {:managingOrganization {:confirms #{fhir/Reference zen.fhir/Reference}
+                                  :zen.fhir/reference {:refers #{MyOrganizationProfileName}}}}}
+                                  
+   MyOrganizationProfileName
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
+    :confirms #{fhir/Organization}}
+                                
+#+END_SRC
 *** slicing on an array
 *** binding to a value set
 *** invariant
