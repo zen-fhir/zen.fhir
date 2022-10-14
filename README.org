@@ -16,6 +16,7 @@
     - [[#min-and-max-elements-in-an-array][min and max elements in an array]]
     - [[#value-pattern][value pattern]]
     - [[#fixed-value][fixed value]]
+    - [[#reference-to-another-resource][reference to another resource]]
     - [[#slicing-on-an-array][slicing on an array]]
     - [[#binding-to-a-value-set][binding to a value set]]
     - [[#invariant][invariant]]
@@ -167,6 +168,7 @@ Here's an example setting a value of the ~Observation.status~ element to be alwa
     :keys {:status {:const {:value "final"}}}}
 #+END_SRC
 
+*** reference to another resource
 *** slicing on an array
 *** binding to a value set
 *** invariant
