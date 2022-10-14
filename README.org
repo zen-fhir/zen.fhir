@@ -186,7 +186,7 @@ When you have a schema with the ~zen.fhir/profile-schema~ tag you can describe r
    MyOrganizationProfileName
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
-    :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
+    :zen.fhir/profileUri "urn:fhir:extension:MyOrganizationProfileName"
     :confirms #{fhir/Organization}}
                                 
 #+END_SRC
