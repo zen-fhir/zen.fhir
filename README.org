@@ -192,6 +192,24 @@ When you have a schema with the ~zen.fhir/profile-schema~ tag you can describe r
 #+END_SRC
 *** slicing on an array
 *** binding to a value set
+When you have a schema with the ~zen.fhir/profile-schema~ tag you can specify value-set. Use ~zen.fhir/value-set~ property and describe [[#describe-a-new-value-set][existing value-set]] name in ~:symbol~ property. You also need to specify one of the supported expansions of value-set in ~:strength~ property.
+Supported expansions:
+- ~:required~ To be conformant, the concept in this element SHALL be from the specified value set.
+- ~:extensible~ To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated. If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead.
+- ~:preferred~ Instances are encouraged to draw from the specified codes for interoperability purposes but are not required to do so to be considered conformant.
+- ~:example~ Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included.
+#+BEGIN_SRC edn
+   MyPatientProfile
+   {:zen/tags #{zen/schema zen.fhir/profile-schema}
+    :zen.fhir/version "0.5.0"
+    :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
+    :confirms #{fhir/Patient}
+    :type zen/map
+    :keys {:gender {:confirms #{fhir/code},
+                    :zen.fhir/value-set {:symbol fhir/administrative-gender,
+                                         :strength :required}}
+#+END_SRC
+
 *** invariant
 
 ** describe a constraint to a nested element
