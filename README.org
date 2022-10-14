@@ -191,6 +191,35 @@ When you have a schema with the ~zen.fhir/profile-schema~ tag you can describe r
                                 
 #+END_SRC
 *** slicing on an array
+You can define slicing in your schema with ~:slicing~ property which allows you to validate particular elements of vector using separate shemas for each element cathegory. To specify validation rules of single slice describe it under ~:slices~ property. Note that each slice should have ~:filter~ property which should contains ~:match~ property. Element becomes part of particular slice if specified data in ~:match~ property matches with element data.
+
+#+BEGIN_SRC edn
+MyObservation
+{:zen/tags #{zen.fhir/profile-schema zen/schema},
+ :zen.fhir/profileUri "urn:fhir:Observation"
+ :zen.fhir/version "0.5.0"
+ :confirms #{fhir/Observation}
+ :type zen/map
+ :keys {:code {:confirms #{fhir/CodeableConcept}
+        :type zen/map
+        :keys {:coding
+                {:slicing
+                 {:type zen/vector
+                  :every {:confirms #{fhir/Coding}
+                          :slices {"HeartRateCode"
+                                   {:schema {:type zen/vector
+                                             :minItems 1  
+                                             :maxItems 1
+                                             :every {:type zen/map
+                                                     :keys {:system {:const {:value "http://loinc.org"}
+                                                                     :confirms #{fhir/uri}}
+                                                            :code   {:const {:value "8867-4"}
+                                                                     :confirms #{fhir/code}}
+                                                            :require #{:system :code}}}}
+                                    :filter {:engine  :match,
+                                             :match   {:code "8867-4", :system "http://loinc.org"}}}}}}}}}}}
+
+#+END_SRC
 *** binding to a value set
 When you have a schema with the ~zen.fhir/profile-schema~ tag you can specify value-set. Use ~zen.fhir/value-set~ property and describe [[#describe-a-new-value-set][existing value-set]] name in ~:symbol~ property. You also need to specify one of the supported expansions of value-set in ~:strength~ property.
 Supported expansions:
@@ -375,5 +404,6 @@ More complex example of an extension:
 *** constraint
 ** add an extension to a profile
 ** describe a new value set
+
 ** constraint some existing value set or code system
 ** describe arbitrary resource
