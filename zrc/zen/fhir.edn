@@ -31,11 +31,14 @@
   :type zen/map
   :keys {:module      {:type zen/string}
          :source-url  {:type zen/string}
+         :source-urls {:type zen/vector
+                       :every {:type zen/string}}
          :ftr-path    {:type zen/string}
          :tag         {:type zen/string}
          :source-type {:type zen/keyword
                        :enum [{:value :flat-table}
-                              {:value :ig}]}
+                              {:value :ig}
+                              {:value :igs}]}
          :extractor-options {:type zen/map
                              :validation-type :open}}}
 
