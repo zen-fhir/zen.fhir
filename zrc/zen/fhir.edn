@@ -160,29 +160,29 @@
   :type     zen/map
   :keys     {:schemas {:type   zen/map
                        :key    {:type zen/string}
-                       :values {:type zen/symbol
-                                :tags #{zen/schema}}}}}
+                       :values {:type zen/qsymbol
+                                #_#_:tags #{zen/schema}}}}}
 
  extensions
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:schemas {:type   zen/map
                        :key    {:type zen/string}
-                       :values {:type zen/symbol
-                                :tags #{zen/schema}}}}}
+                       :values {:type zen/qsymbol
+                                #_#_:tags #{zen/schema}}}}}
 
  value-sets
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:value-sets {:type   zen/map
                           :key    {:type zen/string}
-                          :values {:type zen/symbol
-                                   :tags #{value-set}}}}}
+                          :values {:type zen/qsymbol
+                                   #_#_:tags #{value-set}}}}}
 
  searches
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:searches {:type   zen/map
                         :key    {:type zen/string}
-                        :values {:type zen/symbol
-                                 :tags #{search}}}}}}
+                        :values {:type zen/qsymbol
+                                 #_#_:tags #{search}}}}}}
