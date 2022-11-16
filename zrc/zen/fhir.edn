@@ -141,4 +141,48 @@
                           :sql {:type zen/map
                                 :keys {:where {}
                                        :parameter-format {}
-                                       :order-by {}}}}}}}}}
+                                       :order-by {}}}}}}}}
+
+ ig
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:profiles   {:type zen/symbol
+                          :tags #{profiles}}
+             :extensions {:type zen/symbol
+                          :tags #{extensions}}
+             :value-sets {:type zen/symbol
+                          :tags #{value-sets}}
+             :searches   {:type zen/symbol
+                          :tags #{searches}}}}
+
+ profiles
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:schemas {:type   zen/map
+                       :key    {:type zen/string}
+                       :values {:type zen/symbol
+                                :tags #{zen/schema}}}}}
+
+ extensions
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:schemas {:type   zen/map
+                       :key    {:type zen/string}
+                       :values {:type zen/symbol
+                                :tags #{zen/schema}}}}}
+
+ value-sets
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:value-sets {:type   zen/map
+                          :key    {:type zen/string}
+                          :values {:type zen/symbol
+                                   :tags #{value-set}}}}}
+
+ searches
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:searches {:type   zen/map
+                        :key    {:type zen/string}
+                        :values {:type zen/symbol
+                                 :tags #{search}}}}}}
