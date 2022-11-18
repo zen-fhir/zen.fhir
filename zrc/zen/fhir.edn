@@ -146,43 +146,63 @@
  ig
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
-  :keys     {:profiles   {:type zen/symbol
-                          :tags #{profiles}}
-             :extensions {:type zen/symbol
-                          :tags #{extensions}}
-             :value-sets {:type zen/symbol
-                          :tags #{value-sets}}
-             :searches   {:type zen/symbol
-                          :tags #{searches}}}}
+  :keys     {:base-schemas {:type zen/symbol
+                            :tags #{base-schemas}}
+             :profiles     {:type zen/symbol
+                            :tags #{profiles}}
+             :extensions   {:type zen/symbol
+                            :tags #{extensions}}
+             :structures   {:type zen/symbol
+                            :tags #{structures}}
+             :value-sets   {:type zen/symbol
+                            :tags #{value-sets}}
+             :searches     {:type zen/symbol
+                            :tags #{searches}}}}
+
+ base-schemas
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:schemas {:type   zen/map
+                       :key    {:type zen/string}
+                       :values {:type   zen/map
+                                :key    {:type zen/string}
+                                :values {:type zen/qsymbol}}}}}
 
  profiles
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:schemas {:type   zen/map
                        :key    {:type zen/string}
-                       :values {:type zen/qsymbol
-                                #_#_:tags #{zen/schema}}}}}
+                       :values {:type   zen/map
+                                :key    {:type zen/string}
+                                :values {:type zen/qsymbol}}}}}
 
  extensions
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:schemas {:type   zen/map
                        :key    {:type zen/string}
-                       :values {:type zen/qsymbol
-                                #_#_:tags #{zen/schema}}}}}
+                       :values {:type zen/qsymbol}}}}
+
+ structures
+ {:zen/tags #{zen/schema zen/tag}
+  :type     zen/map
+  :keys     {:schemas {:type   zen/map
+                       :key    {:type zen/string}
+                       :values {:type zen/qsymbol}}}}
 
  value-sets
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:value-sets {:type   zen/map
                           :key    {:type zen/string}
-                          :values {:type zen/qsymbol
-                                   #_#_:tags #{value-set}}}}}
+                          :values {:type zen/qsymbol}}}}
 
  searches
  {:zen/tags #{zen/schema zen/tag}
   :type     zen/map
   :keys     {:searches {:type   zen/map
                         :key    {:type zen/string}
-                        :values {:type zen/qsymbol
-                                 #_#_:tags #{search}}}}}}
+                        :values {:type zen/map
+                                 :key    {:type zen/string}
+                                 :values {:type zen/qsymbol}}}}}}
