@@ -6,7 +6,7 @@
   :zen.fhir/version "0.5.20"
   :require #{:zen.fhir/version}
   :keys {:zen.fhir/version {:type zen/string
-                            :regex "0\\.5\\.\\d+(?:-\\d+)?"}}}
+                            :regex "0\\.([5-9]|[1-9][0-9]+)\\.\\d+(?:-\\d+)?"}}}
 
  Resource
  {:zen/tags #{zen/tag zen/schema}
