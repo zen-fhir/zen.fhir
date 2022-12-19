@@ -38,6 +38,7 @@
          :source-type {:type zen/keyword
                        :enum [{:value :flat-table}
                               {:value :cloud-storage}
+                              {:value :serialized-objects-array}
                               {:value :ig}
                               {:value :igs}]}
          :extractor-options {:type zen/map
