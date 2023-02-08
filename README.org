@@ -34,6 +34,8 @@
 * How to
 This section contains examples of describing FHIR constraints with zen.
 
+⚠️ Note that when you mention a new namespace you need to add it to ~:import~.
+
 Another common thing is ~:zen.fhir/version~ property of schemas.
 It defines which ~zen.fhir~ syntax version your schema will use.
 Currently, schemas are required to specify the version and the current version is ~:zen.fhir/version "0.5.0"~.
@@ -46,7 +48,7 @@ which will be referenced by resources with ~meta.profile~ property.
 Here's an example of a profile on the ~Patient~ resource type:
 #+BEGIN_SRC edn
   {:ns MyProfiles
-   :import #{zen.fhir fhir}
+   :import #{zen.fhir hl7-fhir-r4-core.Patient}
 
    MyPatientProfile
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
@@ -56,6 +58,8 @@ Here's an example of a profile on the ~Patient~ resource type:
 #+END_SRC
 Note the ~:confirms #{hl7-fhir-r4-core.Patient/schema}~ part: it means that the data which will be
 validated by your schema also should be validated by the base Patient schema.
+
+ℹ️ Note that in this case ~hl7-fhir-r4-core.Patient~ was added to the ~:import~.
 
 *** existing FHIR profile 
 This is done in the same way as adding a profile on a [[#existing-fhir-resource-type][existing FHIR resource type]] but you need to set ~:confirms~ to a profile instead of a base schema
