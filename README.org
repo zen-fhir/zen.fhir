@@ -227,7 +227,7 @@ Supported expansions:
     :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
     :keys {:gender {:confirms #{hl7-fhir-r4-core.code/schema},
-                    :zen.fhir/value-set {:symbol hl7-fhir-r4-core.administrative/schema-gender,
+                    :zen.fhir/value-set {:symbol hl7-fhir-r4-core.administrative-gender/schema,
                                          :strength :required}}
 #+END_SRC
 
