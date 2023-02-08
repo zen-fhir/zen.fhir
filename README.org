@@ -34,14 +34,6 @@
 * How to
 This section contains examples of describing FHIR constraints with zen.
 
-Examples use this namespace:
-#+BEGIN_SRC edn
-  {:ns fhir
-   :alias hl7-fhir-r4-core}
-#+END_SRC
-The namespace aliases FHIR R4 definitions as just ~fhir~ allowing you later to replace this alias to
-~hl7-fhir-r4b-core~ or to ~hl7-fhir-r5-core~ and thus migrate your profiles to a newer FHIR core.
-
 Another common thing is ~:zen.fhir/version~ property of schemas.
 It defines which ~zen.fhir~ syntax version your schema will use.
 Currently, schemas are required to specify the version and the current version is ~:zen.fhir/version "0.5.0"~.
@@ -60,9 +52,9 @@ Here's an example of a profile on the ~Patient~ resource type:
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}}}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}}}
 #+END_SRC
-Note the ~:confirms #{fhir/Patient}~ part: it means that the data which will be
+Note the ~:confirms #{hl7-fhir-r4-core.Patient/schema}~ part: it means that the data which will be
 validated by your schema also should be validated by the base Patient schema.
 
 *** existing FHIR profile 
@@ -92,12 +84,12 @@ Here's the updated example of the profile on the Patient resource type with ~:ac
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
     :require #{:active :name}}
 #+END_SRC
 Note that we had to describe the ~:type zen/map~ to use the ~:require~ property.
-Your schema doesn't implicitly inherit the ~:type zen/map~ from the ~:confirms #{fhir/Patient}~.
+Your schema doesn't implicitly inherit the ~:type zen/map~ from the ~:confirms #{hl7-fhir-r4-core.Patient/schema}~.
 And because ~:require~ is a property of the ~zen/map~ type you need to specify the type explicitly in your schema.
 
 *** forbid (cardinality 0..0)
@@ -110,7 +102,7 @@ Currently, there's no way to forbid using an element in zen-lang. Here's [[https
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
     :require #{:name}
     :keys {:name {:type zen/vector
@@ -133,7 +125,7 @@ at least one object with ~:system "my-system"~ and ~:code "my-code"~:
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
-    :confirms #{fhir/Observation}
+    :confirms #{hl7-fhir-r4-core.Observation/schema}
     :type zen/map
     :keys {:code {:match {:coding #{{:system "my-system", :code "my-code"}}}}}}
 #+END_SRC
@@ -163,7 +155,7 @@ Here's an example setting a value of the ~Observation.status~ element to be alwa
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyObservationProfile"
-    :confirms #{fhir/Observation}
+    :confirms #{hl7-fhir-r4-core.Observation/schema}
     :type zen/map
     :keys {:status {:const {:value "final"}}}}
 #+END_SRC
@@ -178,16 +170,16 @@ When you have a schema with the ~zen.fhir/profile-schema~ tag you can describe r
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
-    :keys {:managingOrganization {:confirms #{fhir/Reference zen.fhir/Reference}
+    :keys {:managingOrganization {:confirms #{hl7-fhir-r4-core.Reference/schema zen.fhir/Reference}
                                   :zen.fhir/reference {:refers #{MyOrganizationProfileName}}}}}
                                   
    MyOrganizationProfileName
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyOrganizationProfileName"
-    :confirms #{fhir/Organization}}
+    :confirms #{hl7-fhir-r4-core.Organization/schema}}
                                 
 #+END_SRC
 *** slicing on an array
@@ -198,23 +190,23 @@ MyObservation
 {:zen/tags #{zen.fhir/profile-schema zen/schema},
  :zen.fhir/profileUri "urn:fhir:Observation"
  :zen.fhir/version "0.5.0"
- :confirms #{fhir/Observation}
+ :confirms #{hl7-fhir-r4-core.Observation/schema}
  :type zen/map
- :keys {:code {:confirms #{fhir/CodeableConcept}
+ :keys {:code {:confirms #{hl7-fhir-r4-core.CodeableConcept/schema}
         :type zen/map
         :keys {:coding
                 {:slicing
                  {:type zen/vector
-                  :every {:confirms #{fhir/Coding}
+                  :every {:confirms #{hl7-fhir-r4-core.Coding/schema}
                           :slices {"HeartRateCode"
                                    {:schema {:type zen/vector
                                              :minItems 1  
                                              :maxItems 1
                                              :every {:type zen/map
                                                      :keys {:system {:const {:value "http://loinc.org"}
-                                                                     :confirms #{fhir/uri}}
+                                                                     :confirms #{hl7-fhir-r4-core.uri/schema}}
                                                             :code   {:const {:value "8867-4"}
-                                                                     :confirms #{fhir/code}}
+                                                                     :confirms #{hl7-fhir-r4-core.code/schema}}
                                                             :require #{:system :code}}}}
                                     :filter {:engine  :match,
                                              :match   {:code "8867-4", :system "http://loinc.org"}}}}}}}}}}}
@@ -232,10 +224,10 @@ Supported expansions:
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
-    :keys {:gender {:confirms #{fhir/code},
-                    :zen.fhir/value-set {:symbol fhir/administrative-gender,
+    :keys {:gender {:confirms #{hl7-fhir-r4-core.code/schema},
+                    :zen.fhir/value-set {:symbol hl7-fhir-r4-core.administrative/schema-gender,
                                          :strength :required}}
 #+END_SRC
 
@@ -251,7 +243,7 @@ The following example requires ~Patient.name.given~ to be present and contain at
    {:zen/tags #{zen/schema zen.fhir/profile-schema}
     :zen.fhir/version "0.5.0"
     :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-    :confirms #{fhir/Patient}
+    :confirms #{hl7-fhir-r4-core.Patient/schema}
     :type zen/map
     :require #{:name}
     :keys {:name {:type zen/vector
@@ -272,7 +264,7 @@ The following example describes the =us-core-race= first-class extension right i
  {:zen/tags #{zen/schema zen.fhir/profile-schema}
   :zen.fhir/version "0.5.0"
   :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-  :confirms #{fhir/Patient}
+  :confirms #{hl7-fhir-r4-core.Patient/schema}
   :type zen/map
   :keys {:race
          {:type zen/map
@@ -281,16 +273,16 @@ The following example describes the =us-core-race= first-class extension right i
           :require #{:text}
           :keys {:ombCategory {:type zen/vector
                                :maxItems 5
-                               :every {:confirms #{fhir/Coding}
+                               :every {:confirms #{hl7-fhir-r4-core.Coding/schema}
                                        :zen/desc "American Indian or Alaska Native|Asian|Black or African American|Native Hawaiian or Other Pacific Islander|White"
                                        :zen.fhir/value-set {:symbol omb-race-category-value-set
                                                             :strength :required}}}
                  :detailed {:type zen/vector
-                            :every {:confirms #{fhir/Coding}
+                            :every {:confirms #{hl7-fhir-r4-core.Coding/schema}
                                     :zen/desc "Extended race codes"
                                     :zen.fhir/value-set {:symbol detailed-race-value-set
                                                          :strength :required}}}
-                 :text {:confirms #{fhir/string}
+                 :text {:confirms #{hl7-fhir-r4-core.string/schema}
                         :zen/desc "Race Text"}}}}}
 #+END_SRC
 
@@ -340,23 +332,23 @@ Here's the =us-core-race= profile updated in a such manner:
   :require #{:text}
   :keys {:ombCategory {:type zen/vector
                        :maxItems 5
-                       :every {:confirms #{fhir/Coding}
+                       :every {:confirms #{hl7-fhir-r4-core.Coding/schema}
                                :zen/desc "American Indian or Alaska Native|Asian|Black or African American|Native Hawaiian or Other Pacific Islander|White"
                                :zen.fhir/value-set {:symbol omb-race-category-value-set
                                                     :strength :required}}}
          :detailed {:type zen/vector
-                    :every {:confirms #{fhir/Coding}
+                    :every {:confirms #{hl7-fhir-r4-core.Coding/schema}
                             :zen/desc "Extended race codes"
                             :zen.fhir/value-set {:symbol detailed-race-value-set
                                                  :strength :required}}}
-         :text {:confirms #{fhir/string}
+         :text {:confirms #{hl7-fhir-r4-core.string/schema}
                 :zen/desc "Race Text"}}}
 
  MyPatientProfile
  {:zen/tags #{zen/schema zen.fhir/profile-schema}
   :zen.fhir/version "0.5.0"
   :zen.fhir/profileUri "urn:fhir:extension:MyPatientProfile"
-  :confirms #{fhir/Patient}
+  :confirms #{hl7-fhir-r4-core.Patient/schema}
   :type zen/map
   :keys {:race {:confirms #{us-core-race}
                 :zen/desc "US Core Race Extension"
@@ -376,23 +368,23 @@ More complex example of an extension:
   :type zen/map
   :keys {:meta {:type zen/map
                 :keys {:tenant-id
-                       {:confirms #{fhir/string}
+                       {:confirms #{hl7-fhir-r4-core.string/schema}
                         :zen/desc "Patient.meta.tenant-id first-class extension"
                         :fhir/extensionUri "http://tenant-id-extension-url"}}}
 
          :form {:type zen/vector
                 :zen/desc "Patient.form.[*] array first-class extension"
-                :every {:confirms #{fhir/uri}
+                :every {:confirms #{hl7-fhir-r4-core.uri/schema}
                         :fhir/extensionUri "http://patient-form-url"}}
 
          :info {:type zen/map
                 :zen/desc "Patient.info nested first-class extension"
                 :fhir/extensionUri "http://patient-info"
-                :keys {:registration {:confirms #{fhir/dateTime}
+                :keys {:registration {:confirms #{hl7-fhir-r4-core.dateTime/schema}
                                       :zen/desc "Patient.info.registration
                                                  extension.url deduced from key"}
 
-                       :referral {:confirms #{fhir/uri}
+                       :referral {:confirms #{hl7-fhir-r4-core.uri/schema}
                                   :fhir/extensionUri "http://patient-info-referral"
                                   :zen/desc "Patient.info.referral
                                              extension.url is specified"}}}}}
