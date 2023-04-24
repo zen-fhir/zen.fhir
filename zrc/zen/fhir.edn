@@ -20,6 +20,7 @@
   :zen/desc "reference datatype"
   :type zen/map
   :keys {:id {:type zen/string}
+         :_id {:type zen/string}
          :resourceType {:type zen/string}
          :display {:type zen/string}
          :localRef {:type zen/string}
