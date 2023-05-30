@@ -208,4 +208,8 @@
                         :key    {:type zen/string}
                         :values {:type zen/map
                                  :key    {:type zen/string}
-                                 :values {:type zen/qsymbol}}}}}}
+                                 :values {:type zen/qsymbol}}}}}
+
+ extension
+ {:zen/tags #{zen/tag}
+  :zen/desc "Tag for extension resources, serves only as a selector and does not provide any additional semantics."}}
