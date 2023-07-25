@@ -137,6 +137,20 @@
                 :values {:type zen/map
                          :keys
                          {:knife {}
+                          :base-knife {:type zen/vector
+                                       :every {:type zen/vector
+                                               :every zen/string}}
+                          :base-jsonpath {:type zen/vector
+                                          :every {:type zen/string}}
+                          :component-knife {:type zen/vector
+                                            :every {:type zen/vector
+                                                    :every {:type zen/vector
+                                                            :every zen/string}}}
+                          :component-jsonpath {:type zen/vector
+                                               :every {:type zen/vector
+                                                       :every {:type zen/string}}}
+                          :search-types {:type zen/vector
+                                         :every {:type zen/keyword}}
                           :jsonpath {:type zen/vector
                                      :every {:type zen/string}}
                           :template {}
