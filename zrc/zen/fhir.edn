@@ -145,7 +145,7 @@
                           :component-knife {:type zen/vector
                                             :every {:type zen/vector
                                                     :every {:type zen/vector
-                                                            :every zen/string}}}
+                                                            :every {:type zen/string}}}}
                           :component-jsonpath {:type zen/vector
                                                :every {:type zen/vector
                                                        :every {:type zen/string}}}
