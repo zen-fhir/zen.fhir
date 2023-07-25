@@ -139,7 +139,7 @@
                          {:knife {}
                           :base-knife {:type zen/vector
                                        :every {:type zen/vector
-                                               :every {:type zen/string}}
+                                               :every {:type zen/string}}}
                           :base-jsonpath {:type zen/vector
                                           :every {:type zen/string}}
                           :component-knife {:type zen/vector
@@ -158,7 +158,7 @@
                           :sql {:type zen/map
                                 :keys {:where {}
                                        :parameter-format {}
-                                       :order-by {}}}}}}}}}
+                                       :order-by {}}}}}}}}
 
  ig
  {:zen/tags #{zen/schema zen/tag}
